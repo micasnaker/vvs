@@ -1,0 +1,5 @@
+@function px2rem($px){
+	@return $px*320/$designWidth/20 + rem;
+}
+// 这里是具体项目的整体宽度
+$designWidth : 750;
