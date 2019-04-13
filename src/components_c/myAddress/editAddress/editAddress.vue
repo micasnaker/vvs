@@ -15,14 +15,25 @@
       </div>
       <div class="man">
         <label for="省市地区" @click="choose">省市地区</label>
-        <div class="show_wrap" v-if="show">
-          <VDistpicker type="mobile" @selected="onSelected"></VDistpicker>
-        </div>
-          <input type="text" :placeholder="edit_address.address">
+        <van-popup v-model="show" position="bottom">
+          <van-area
+            :area-list="areaList"
+            :value="address_l"
+            @confirm="onConfirm"
+            @cancel="onCancel"
+          />
+        </van-popup>
+
+        <input type="text" readonly="readonly" :placeholder="edit_address.address" @click="choose">
       </div>
       <div class="mandress">
         <label for="详细地址">详细地址</label>
-        <input type="textarea" :placeholder="edit_address.detail" v-model="detail" v-if="edit_address.detail">
+        <input
+          type="textarea"
+          :placeholder="edit_address.detail"
+          v-model="detail"
+          v-if="edit_address.detail"
+        >
         <input type="textarea" placeholder="请输入详细地址(5-120字)" v-model="detail" v-else>
       </div>
       <div class="default">
@@ -38,8 +49,8 @@
 
 <script>
 import headAddress from "../../../components/TopHead";
-import VDistpicker from "v-distpicker";
 import services from "../../../../service/index.js";
+import AreaList from "../../../../static/area.js";
 import { MessageBox } from "mint-ui";
 export default {
   data() {
@@ -55,13 +66,15 @@ export default {
       City: "",
       Area: "",
       value: false,
-      edit_address:this.$route.params.edit_address
+      edit_address: this.$route.params.edit_address,
+      areaList: AreaList,
+      address_l: ""
     };
+    show: false;
   },
 
   components: {
-    headAddress,
-    VDistpicker
+    headAddress
   },
 
   computed: {},
@@ -71,16 +84,25 @@ export default {
   },
 
   methods: {
-    choose() {
+    // 确认选择地址
+    onConfirm(e) {
+      // this.userregion = this.
+      this.show = !this.show;
+      this.regiondata = e;
+      this.userregion =
+        this.regiondata[0].name +
+        this.regiondata[1].name +
+        this.regiondata[2].name;
+      // console.log(this.userregion);
+    },
+
+    onCancel(e) {
+      // console.log(e)
       this.show = !this.show;
     },
 
-    onSelected(data) {
-      //   alert(data.province + ' | ' + data.city + ' | ' + data.area)
-      var citys = [];
-      this.citys = data;
-      //   console.log(this.citys)
-      this.show = false;
+    choose() {
+      this.show = !this.show;
     },
 
     // 完成按钮添加地址
@@ -102,24 +124,24 @@ export default {
       } else {
         var is_defaults = 0;
       }
-      var address_id = this.edit_address.id
+      var address_id = this.edit_address.id;
       var is_default = is_defaults;
       var contact_name = this.username;
       var phone = this.phone;
-      var address1 = JSON.stringify(this.citys.province.value).replace(
-        /\"/g,
-        ""
-      );
-      var address2 = JSON.stringify(this.citys.city.value).replace(/\"/g, "");
-      var address3 = JSON.stringify(this.citys.area.value).replace(/\"/g, "");
-      var address_l = address1 + address2 + address3;
-
+      // var address1 = JSON.stringify(this.citys.province.value).replace(
+      //   /\"/g,
+      //   ""
+      // );
+      // var address2 = JSON.stringify(this.citys.city.value).replace(/\"/g, "");
+      // var address3 = JSON.stringify(this.citys.area.value).replace(/\"/g, "");
+      // var address_l = address1 + address2 + address3;
+      var address_l = this.userregion;
       MessageBox.confirm("确定执行此操作?").then(action => {
         services
           .editAddress({
             id: this.id,
             token_sc: this.token,
-            address_id : address_id,
+            address_id: address_id,
             contact_name: this.username,
             phone: this.phone,
             address: address_l,
@@ -127,8 +149,8 @@ export default {
           })
           .then(res => {
             // console.log(res);
-            if(res.data.error_code==0){
-               this.$router.go(-1)
+            if (res.data.error_code == 0) {
+              this.$router.go(-1);
             }
           });
       });
@@ -177,6 +199,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);
       }
     }
     .mans {
@@ -208,6 +231,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);
       }
     }
 
@@ -227,10 +251,10 @@ export default {
         margin-left: px2rem(90);
         height: px2rem(50);
         width: px2rem(300);
+        font-size: px2rem(25);
         -moz-appearance: none;
         outline: 0;
         text-decoration: none;
-        font-size: px2rem(25);
         outline: none;
         border: 0;
       }
@@ -240,6 +264,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);
       }
     }
     .distpicker-address-wrapper {
@@ -283,3 +308,13 @@ export default {
   }
 }
 </style>
+
+<style lang="scss">
+html,
+body,
+.addAddress {
+  background-color: #fff;
+  // height: 100%;
+}
+</style>
+

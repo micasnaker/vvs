@@ -15,9 +15,16 @@
       </div>
       <div class="man">
         <label for="省市地区" @click="choose">省市地区</label>
-        <div class="show_wrap" v-if="show">
-          <VDistpicker type="mobile" @selected="onSelected"></VDistpicker>
-        </div>
+          <van-popup v-model="show" position="bottom">
+            <van-area 
+          :area-list="areaList" 
+          :value=address_l
+          @confirm="onConfirm"
+          @cancel="onCancel"
+          /></van-popup>
+          
+        <!-- </div> -->
+        <input type="text" readonly="readonly" :placeholder="userregion" @click="choose">
       </div>
       <div class="mandress">
         <label for="详细地址">详细地址</label>
@@ -36,9 +43,9 @@
 
 <script>
 import headAddress from "../../../components/TopHead";
-import VDistpicker from "v-distpicker";
 import services from "../../../../service/index.js";
 import { MessageBox } from "mint-ui";
+import AreaList from "../../../../static/area.js"
 export default {
   data() {
     return {
@@ -53,13 +60,15 @@ export default {
       City: "",
       Area: "",
       value: false,
-      citys:[]
+      citys:[],
+      areaList: AreaList,
+      address_l:'',
+      userregion:''
     };
   },
 
   components: {
     headAddress,
-    VDistpicker
   },
 
   computed: {},
@@ -69,29 +78,22 @@ export default {
   },
 
   methods: {
-    choose() {
-      this.show = !this.show;
+
+        // 确认选择地址
+    onConfirm(e) {
+      // this.userregion = this.
+      this.show = !this.show
+      this.regiondata = e
+      this.userregion = this.regiondata[0].name + this.regiondata[1].name + this.regiondata[2].name
+      // console.log(this.userregion);
     },
 
-    //   onChangeProvince(a){
-    //     var Province = a.value
-    //     console.log(Province)
-    //   },
-    //   onChangeCity(a){
-    //     var City = a.value
-    //     console.log(City)
-    //   },
-    //   onChangeArea(a){
-    //     var Area = a.value
-    //     console.log(Area)
-    //     this.show=false
-    //   }
-    onSelected(data) {
-      //   alert(data.province + ' | ' + data.city + ' | ' + data.area)
-      var citys = [];
-      this.citys = data;
-      //   console.log(this.citys)
-      this.show = false;
+    onCancel(e){
+      // console.log(e)
+      this.show = !this.show
+    },
+    choose() {
+      this.show = !this.show;
     },
 
     // 完成按钮添加地址
@@ -116,14 +118,14 @@ export default {
       var is_default = is_defaults;
       var contact_name = this.username;
       var phone = this.phone;
-      var address1 = JSON.stringify(this.citys.province.value).replace(
-        /\"/g,
-        ""
-      );
-      var address2 = JSON.stringify(this.citys.city.value).replace(/\"/g, "");
-      var address3 = JSON.stringify(this.citys.area.value).replace(/\"/g, "");
-      var address_l = address1 + address2 + address3;
-
+      // var address1 = JSON.stringify(this.citys.province.value).replace(
+      //   /\"/g,
+      //   ""
+      // );
+      // var address2 = JSON.stringify(this.citys.city.value).replace(/\"/g, "");
+      // var address3 = JSON.stringify(this.citys.area.value).replace(/\"/g, "");
+      // var address_l = address1 + address2 + address3;
+      var address_l = this.userregion
       MessageBox.confirm("确定执行此操作?").then(action => {
         services
           .addAddress({
@@ -141,22 +143,6 @@ export default {
             }
           });
       });
-      // services.addAddress({
-      //     id:this.id,
-      //     token_sc : this.token,
-      //     contact_name:this.username,
-      //     phone:this.phone,
-      //     address:address_l,
-      //     is_default:is_defaults
-      // })
-      // .then(res=>{
-
-      //     if(res.data.error_code==0){
-
-      //     }
-      // })
-
-      // console.log("开关"+this.value,"地址"+JSON.stringify(this.citys.area.value),"姓名"+this.username,"手机"+this.phone,"备注"+this.detail)
     }
   }
 };
@@ -200,6 +186,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);
       }
     }
     .mans {
@@ -231,6 +218,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);
       }
     }
 
@@ -263,6 +251,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);      
       }
     }
     .distpicker-address-wrapper {

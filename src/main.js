@@ -12,15 +12,19 @@ import { Search } from 'mint-ui';
 import { Field } from 'mint-ui';
 import { Header } from 'mint-ui';
 import { Lazyload } from 'mint-ui';
-import VDistpicker from 'v-distpicker'
 import { Switch } from 'mint-ui';
+import Vant from 'vant';
+import 'vant/lib/index.css';
 
+import { Area } from 'vant';
+import { Popup } from 'vant';
 
-import iView from 'iview';
-import 'iview/dist/styles/iview.css';
+Vue.use(Popup);
+Vue.use(Area);
+
+Vue.use(Vant);
 
 Vue.use(Lazyload);
-Vue.component('v-distpicker', VDistpicker);
 
 Vue.component(Header.name, Header);
 
@@ -34,13 +38,12 @@ Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(Switch.name, Switch);
 
-Vue.use(iView);
 
 
 // 移动端 hotcss 适配方案 
 // 1、导入
 import '../lib/hotcss/hotcss'
-// 引入 mint-ui 的样式
+
 import 'mint-ui/lib/style.css'
 Vue.config.productionTip = false
 

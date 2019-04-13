@@ -91,6 +91,7 @@ export default {
             text-align: center;
             padding-top: px2rem(50);
             margin: px2rem(10) px2rem(10) px2rem(10) px2rem(10);
+            line-height: px2rem(40);
         }
     }
     .paysu_logo{

@@ -22,7 +22,7 @@
       </div>
       
       <div class="add_address" @click="addAddress">
-        <img src="../../assets/images/address/btn.png" alt="">
+        <img class="add_img" src="../../assets/images/address/btn.png" alt="">
       </div>
   </div>
   
@@ -85,7 +85,7 @@ export default {
     deleteAddress(item){
       var delete_address = item
       this.$router.push({name:'deleteAddress',params:{delete_address}});
-    }
+    },
   }
 }
 
@@ -124,7 +124,7 @@ export default {
   }
   .handle{
     border-top: px2rem(1) solid #ddd;
-    width: 100%;
+    // width: 100%;
     height: px2rem(60);
     display: flex;
     justify-content: space-between;
@@ -139,6 +139,7 @@ export default {
       input{
         width: px2rem(30);
         height: px2rem(30);
+        margin-top: px2rem(3);
       }
       label{
         font-size: px2rem(20);
@@ -166,6 +167,7 @@ export default {
   height: px2rem(98);
   width: 100%;
   bottom: 0;
+  background-color: #F64F4F;
   img{
     width: 100%;
     height: px2rem(98);
@@ -173,4 +175,12 @@ export default {
 }
 }
 
+</style>
+
+<style lang="scss" scoped>
+    @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    .mint-tabbar, .add_address, .add_img {
+        padding-bottom: px2rem(34) !important
+    }
+}
 </style>

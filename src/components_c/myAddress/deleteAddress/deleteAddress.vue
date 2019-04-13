@@ -7,7 +7,12 @@
     <div class="address_wrap">
       <div class="mans">
         <label for="收货人">收货人</label>
-        <input type="text" label="收货人" :placeholder="delete_address.contact_name" v-model="username">
+        <input
+          type="text"
+          label="收货人"
+          :placeholder="delete_address.contact_name"
+          v-model="username"
+        >
       </div>
       <div class="man">
         <label for="手机号">手机号码</label>
@@ -16,13 +21,17 @@
       <div class="man">
         <label for="省市地区" @click="choose">省市地区</label>
         <div class="show_wrap" v-if="show">
-          <VDistpicker type="mobile" @selected="onSelected"></VDistpicker>
         </div>
-          <input type="text" :placeholder="delete_address.address">
+        <input type="text" readonly="true" :placeholder="delete_address.address">
       </div>
       <div class="mandress">
         <label for="详细地址">详细地址</label>
-        <input type="textarea" :placeholder="delete_address.detail" v-model="detail" v-if="delete_address.detail">
+        <input
+          type="textarea"
+          :placeholder="delete_address.detail"
+          v-model="detail"
+          v-if="delete_address.detail"
+        >
         <input type="textarea" placeholder="请输入详细地址(5-120字)" v-model="detail" v-else>
       </div>
       <div class="default">
@@ -38,7 +47,6 @@
 
 <script>
 import headAddress from "../../../components/TopHead";
-import VDistpicker from "v-distpicker";
 import services from "../../../../service/index.js";
 import { MessageBox } from "mint-ui";
 export default {
@@ -55,32 +63,22 @@ export default {
       City: "",
       Area: "",
       value: false,
-      delete_address:this.$route.params.delete_address
+      delete_address: this.$route.params.delete_address,
     };
   },
 
   components: {
     headAddress,
-    VDistpicker
   },
 
   computed: {},
 
   mounted() {
-    //   console.log(this.value)
   },
 
   methods: {
     choose() {
       this.show = !this.show;
-    },
-
-    onSelected(data) {
-      //   alert(data.province + ' | ' + data.city + ' | ' + data.area)
-      var citys = [];
-      this.citys = data;
-      //   console.log(this.citys)
-      this.show = false;
     },
 
     // 完成按钮添加地址
@@ -102,24 +100,22 @@ export default {
       } else {
         var is_defaults = 0;
       }
-      var address_id = this.delete_address.id
+      var address_id = this.delete_address.id;
 
-      MessageBox.confirm("确定执行此操作?").then(action => {
+      MessageBox.confirm("确定删除地址?").then(action => {
         services
           .deleteAddress({
             id: this.id,
             token_sc: this.token,
-            address_id : address_id,
+            address_id: address_id
           })
           .then(res => {
-            console.log(res);
-            if(res.data.error_code==0){
-               this.$router.go(-1)
+            // console.log(res);
+            if (res.data.error_code == 0) {
+              this.$router.go(-1);
             }
           });
       });
-
-      // console.log("开关"+this.value,"地址"+JSON.stringify(this.citys.area.value),"姓名"+this.username,"手机"+this.phone,"备注"+this.detail)
     }
   }
 };
@@ -163,6 +159,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);
       }
     }
     .mans {
@@ -194,6 +191,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);
       }
     }
 
@@ -226,6 +224,7 @@ export default {
         font-family: Microsoft Yahei;
         width: px2rem(50);
         height: px2rem(60);
+        line-height: px2rem(40);
       }
     }
     .distpicker-address-wrapper {
@@ -261,22 +260,32 @@ export default {
     }
     .btn_wrap {
       width: 100%;
+      background-color: #F64F4F;
       img {
         width: px2rem(750);
         height: px2rem(80);
       }
     }
   }
-  .btn_wrap{
-  z-index: 99;
-  position: fixed;
-  height: px2rem(80);
-  width: 100%;
-  bottom: 0;
-  img{
-    width: 100%;
+  .btn_wrap {
+    z-index: 99;
+    position: fixed;
     height: px2rem(80);
+    width: 100%;
+    bottom: 0;
+    img {
+      width: 100%;
+      height: px2rem(80);
+    }
   }
 }
+</style>
+
+
+<style lang="scss" scoped>
+    @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    .mint-tabbar, .btn_wrap, .add_img {
+        padding-bottom: px2rem(34) !important
+    }
 }
 </style>

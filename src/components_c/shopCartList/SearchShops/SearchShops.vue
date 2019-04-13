@@ -6,7 +6,7 @@
   <div class="shop">
     <div class="shopList">
       <!-- <p>{{this.$route.params.id}}</p> -->
-      <div class="shop_wrap" @click="goDetail(item.id)" v-for="(item, index) in searchList.list" :key="index">
+      <div class="shop_wrap" v-for="(item, index) in searchList.list" :key="index">
         <div class="shop_img">
           <img :src="item.img" alt>
         </div>
@@ -51,8 +51,8 @@ export default {
   mounted() {
     services
       .getSearchShopList({
-        cat1: '',
-        cat2: '',
+        cat1: this.fid,
+        cat2: this.cat_id,
         price_type: this.price_types,
         type: this.types,
         k: this.ks,
@@ -62,30 +62,25 @@ export default {
       .then(res => {
         if (res.data.error_code == 0) {
           this.searchList = res.data.data;
-        } else if (res.data.error_code == 1100) {
-          Toast("参数错误");
-          console.log("参数错误");
+        } else {
+          Toast("暂无该商品");
+          console.log("暂无商品");
         }
         console.log(res);
       });
   },
 
-  methods: {
-    //  跳转商品详情页
-      goDetail(id){
-          this.$router.push({name:'ShopIntro',params:{id}})
-      }
-  }
+  methods: {}
 };
 </script>
 
 <style lang="scss" scoped>
 .shop {
+  height: px2rem(500);
   // background-color: red;
-  // margin-top: -72%;
-//   width: 100%;
-  margin-left: px2rem(135);
-  position: absolute;
+  margin-top: 10%;
+  width: 100%;
+  margin-left: px2rem(150);
   .heade_wrap {
     width: 50%;
     float: left;
@@ -97,30 +92,31 @@ export default {
     }
   }
   .shopList {
-    // width: 100%;
+    width: 100%;
     height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    // flex-flow: row wrap;
+    justify-content: space-between;
     z-index: 98;
-    width: 50%;
     .shop_wrap {
-      // width: 63%;
+      width: px2rem(250);
       height: px2rem(420);
       margin-top: px2rem(63);
       margin: 12px 12px;
       background-color: #dcdcdc;
       margin-right: px2rem(50);
       margin-left: px2rem(40);
-          display: flex;
-    flex-wrap: wrap;
-    // flex-flow: row wrap;
-    justify-content: space-between;
+      p {
+        width: px2rem(285);
+      }
       .shop_img {
+        width: px2rem(240);
         margin: 0 auto;
         text-align: center;
-                  width: px2rem(205);
-          height: px2rem(210);
         img {
-          width: px2rem(185);
-          height: px2rem(200);
+          width: px2rem(225);
+          height: px2rem(225);
           margin: px2rem(20) px2rem(10);
         }
       }
@@ -146,8 +142,7 @@ export default {
         padding-left: px2rem(9);
       }
       .price_wrap {
-        // width: px2rem(285);
-        width: 100%;
+        width: px2rem(285);
         height: px2rem(34);
         line-height: px2rem(34);
         span {

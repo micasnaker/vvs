@@ -2,15 +2,18 @@
 <template>
   <div class="shopintro">
       <div class="content">
-        <h1>{{$route.params.goodsInfo.product_description}}</h1>
+        <!-- <h1>{{$route.query.goodsInfo.product_description}}</h1> -->
+        <h1>{{shopIntro}}</h1>
       </div>
   </div>
 </template>
 
 <script>
+import services from '../../../../service/index.js'
 export default {
   data () {
     return {
+      shopIntro:[]
     };
   },
 
@@ -18,7 +21,15 @@ export default {
 
   computed: {},
 
-  mounted(){},
+  mounted(){
+    services.getShopGoodsInfo({
+      goods_id:this.$route.params.id
+    })
+    .then(res=>{
+      this.shopIntro = res.data.data.product_description
+      // console.log(JSON.stringify(this.shopIntro)+"shopintro")
+    })
+  },
 
   methods: {}
 }
@@ -28,7 +39,7 @@ export default {
 <style lang="scss" scoped>
 .shopintro{
   width: 100%;
-  height: px2rem(500);
+  // height: px2rem(500);
   .content{
     width: 97%;
     height: px2rem(460);
@@ -39,6 +50,7 @@ export default {
       color: rgba(16,16,16,1);
       font-size: px2rem(26);
       font-family: PingFangSC-regular;
+      line-height: px2rem(35);
     }
   }
 }

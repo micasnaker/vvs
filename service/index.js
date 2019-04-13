@@ -80,6 +80,16 @@ export default {
       return axios.post('/orders/list',data)
     },
 
+    // 订单详情
+    ordersInfo(data){
+      return axios.post('/orders/info',data)
+    },
+
+    // 确认收货
+    ordersTakeDelivery(data){
+      return axios.post('/orders/take_delivery',data)
+    },
+
     // 收货地址
     AddressList(data){
       return axios.post('/address/list',data)

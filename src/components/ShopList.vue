@@ -13,7 +13,9 @@
           </div>
           <span class="shop_name">{{item.name}}</span>
           <div class="price_wrap">
-            <span>UFV {{item.price}}</span>
+            <span v-if="item.price_type==3">UFV {{item.price}}</span>
+            <span v-else-if="item.price_type==1">银鱼 {{item.price}}</span>
+            <span v-else>金鱼 {{item.price}}</span>
           <p>{{item.price_origin}}</p>
           </div>
           <div class="print_wrap">
@@ -45,7 +47,7 @@ export default {
   methods: {
     //  跳转商品详情页
       goDetail(id){
-          this.$router.push({name:'GoodsInfo',params:{id}})
+          this.$router.push({name:'ShopIntro',params:{id}})
       }
   }
 }
@@ -74,7 +76,7 @@ export default {
         z-index: 98;
         .shop_wrap{
             width: px2rem(285);
-            height: px2rem(420);
+            height: px2rem(430);
             margin-top: px2rem(63);
             margin: 12px 12px;
             background-color: #DCDCDC;

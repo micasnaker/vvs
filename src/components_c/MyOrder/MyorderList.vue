@@ -1,37 +1,47 @@
 <!--  -->
 <template>
   <div class="myorderall">
-    <div class="order-content">
-      <div class="head-top">
-        <p>2018-01-23 08：40</p> 
-        <p>已发货</p>
+    <div class="order-content" v-for="(item, index) in allOrderList.list" :key="index">
+      <div class="head-top" @click="checkLog">
+        <p>{{item.created_at}}</p>
+        <p v-if="item.order_status==0">待确认</p>
+        <p v-else-if="item.order_status==1">已发货</p>
+        <p v-else-if="item.order_status==2">已完成</p>
+        <p v-else>已撤销</p>
       </div>
 
-      <div class="content">
+      <div class="content" @click="checkLog">
         <div class="img_wrap">
-          <img src="../../assets/images/person/myorder/shopimg.png" alt="">
+          <img :src="item.orders_goods[index].path" alt>
         </div>
         <div class="content_top">
-          <p>黄金曼特宁挂耳咖啡 10克*10包</p>
+          <p>{{item.orders_goods[index].goods_name}}</p>
           <div class="content_foot">
-          <div class="price_wrap"><span>UFV 66.6 </span><span>UFV100.00</span></div>
-          <p>X1</p>
+            <div class="price_wrap">
+              <span v-if="item.orders_goods[index].price_type==3">UFV {{item.orders_goods[index].price}}</span>
+              <span v-else-if="item.orders_goods[index].price_type==1">银鱼 {{item.orders_goods[index].price}}</span>
+              <span v-else>金鱼 {{item.orders_goods[index].price}}</span>
+
+              <span v-if="item.orders_goods[index].price_type==3">UFV{{item.orders_goods[index].price_origin}}</span>
+              <span v-else-if="item.orders_goods[index].price_type==1">银鱼{{item.orders_goods[index].price_origin}}</span>
+              <span v-else>金鱼{{item.orders_goods[index].price_origin}}</span>
+            </div>
+            <p>X1</p>
+          </div>
         </div>
-        </div>
-        
       </div>
 
-      <div class="footer">
+      <div class="footer" @click="checkLog">
         <div class="footer_p">
-        <p>共计1件商品 总计：UFV 66.6 银鱼 66.6 金鱼66.6</p>
+          <p>共计{{item.goods_count_total}}件商品 总计：UFV {{item.fly_fish_coin_price}} 银鱼 {{item.silver_fish_price}} 金鱼{{item.gold_fish_price}}</p>
         </div>
       </div>
       <div class="cargo">
-          <div class="cargo_img">
-            <img src="../../assets/images/person/myorder/logistics2x.png" alt="">
-          <img src="../../assets/images/person/myorder/enter@2x.png" alt="">
-          </div>
+        <div class="cargo_img">
+          <img @click="checkLog" src="../../assets/images/person/myorder/logistics2x.png" alt>
+          <img src="../../assets/images/person/myorder/enter@2x.png" alt>
         </div>
+      </div>
     </div>
 
     <div class="base">
@@ -41,34 +51,45 @@
 </template>
 
 <script>
-import services from '../../../service/index.js'
+import services from "../../../service/index.js";
 export default {
-  data () {
-    return {
-    };
+  data() {
+    return {};
   },
+
+  props: ["allOrderList"],
 
   components: {},
 
   computed: {},
 
-  mounted(){
-  },
+  mounted() {},
 
-  methods: {}
-}
-
+  methods: {
+    // 跳转查看订单详情携带订单主键id
+    checkLog() {
+      for (var i = 0; i < this.allOrderList.list.length; i++) {
+        var order_id = this.allOrderList.list[i].id;
+      }
+      // console.log(order_id)
+      this.$router.push({
+        name: "checkLogistics",
+        query: { orders_id: order_id }
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-.myorderall{
+.myorderall {
   width: 100%;
   height: 100%;
-  background-color:rgba(224,224,224,1);
-  .order-content{
+  background-color: rgba(224, 224, 224, 1);
+  .order-content {
     background-color: #fff;
     margin-bottom: px2rem(20);
-    .head-top{
+    .head-top {
       width: 90%;
       height: px2rem(50);
       display: flex;
@@ -76,86 +97,87 @@ export default {
       margin: 0 auto;
       border-bottom: px2rem(1) solid #ddd;
       line-height: px2rem(50);
-      p{
-        color: rgba(16,16,16,1);
+      p {
+        color: rgba(16, 16, 16, 1);
         font-size: px2rem(22);
         font-family: PingFangSC-regular;
       }
-      p:last-child{
-        color: rgba(229,28,35,1);
+      p:last-child {
+        color: rgba(229, 28, 35, 1);
       }
     }
-    .content{
+    .content {
       width: 90%;
       height: px2rem(130);
       display: flex;
       justify-content: space-evenly;
       margin: 0 auto;
-      .img_wrap{
+      .img_wrap {
         width: px2rem(135);
         height: px2rem(135);
         margin-left: px2rem(-120);
         margin-top: px2rem(10);
-        img{
+        img {
           width: px2rem(125);
           height: px2rem(125);
         }
       }
-      .content_top{
+      .content_top {
         line-height: px2rem(60);
-        p{
-          color: rgba(16,16,16,1);
+        p {
+          color: rgba(16, 16, 16, 1);
           font-size: px2rem(22);
           font-family: PingFangSC-regular;
         }
-        .content_foot{
+        .content_foot {
           display: flex;
           justify-content: space-between;
           height: px2rem(30);
-          span{
-            color: rgba(16,16,16,1);
+          span {
+            color: rgba(16, 16, 16, 1);
             font-size: px2rem(22);
             font-family: PingFangSC-regular;
           }
-          span:first-child{
-            color: rgba(237,23,9,1);
+          span:first-child {
+            color: rgba(237, 23, 9, 1);
+          }
+          span:last-child {
+            text-decoration: line-through;
           }
         }
       }
     }
-    .footer{
+    .footer {
       height: px2rem(60);
       width: 100%;
       margin-top: px2rem(20);
       display: flex;
       justify-content: space-around;
-      .footer_p{
+      .footer_p {
         width: px2rem(700);
         height: px2rem(30);
         margin-top: px2rem(10);
-        p{
-          color: rgba(16,16,16,1);
+        p {
+          color: rgba(16, 16, 16, 1);
           font-size: px2rem(22);
           font-family: PingFangSC-regular;
         }
       }
     }
-    .cargo{
-        width: 100%;
-        height: px2rem(50);
-        .cargo_img{
-          float: right;
-          width: px2rem(300);
-          img{
+    .cargo {
+      width: 100%;
+      height: px2rem(50);
+      .cargo_img {
+        float: right;
+        img {
           padding-right: px2rem(10);
           width: px2rem(140);
           height: px2rem(40);
-          }
         }
-        
       }
+    }
   }
-  .base{
+  .base {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -167,8 +189,8 @@ export default {
     line-height: px2rem(40);
     border-top: px2rem(3) solid #ddd;
     margin-top: px2rem(20);
-    p{
-      color: rgba(16,16,16,1);
+    p {
+      color: rgba(16, 16, 16, 1);
       font-size: px2rem(22);
       font-family: PingFangSC-regular;
     }

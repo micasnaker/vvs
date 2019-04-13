@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <keep-alive>
+    <!-- <keep-alive>
     <router-view  v-show="$route.meta.keepAlive"/>
     </keep-alive>
+    <router-view v-show="!$route.meta.keepAlive"></router-view> -->
+    
     <router-view  v-if="isRouterAlive"/>
-    <!-- <router-view v-show="!$route.meta.keepAlive"></router-view> -->
     <Tabbar v-show="$route.meta.showFooter"></Tabbar>
   </div>
 </template>
-
 
 <script>
 // 样式重置 common.css
@@ -39,13 +39,8 @@ export default {
           this.isRouterAlive = true
        })
     }
-  }
-
+  },
 }
 </script>
 
-
-<style lang="scss" scoped>
-
-</style>
 

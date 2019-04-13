@@ -27,13 +27,20 @@
             <span>【{{goodsInfo.cat1_name}}】</span>
             <span>{{goodsInfo.name}}</span>
         </div>
-        <p>已出售{{goodsInfo.price_type}}件</p>
+        <p>已出售{{goodsInfo.sold_count}}件</p>
         <div class="info_content">
             <div>
-            <span>UFV {{goodsInfo.price}}</span>
-            <span> UFV {{goodsInfo.price_origin}}</span>
+
+            <span v-if="goodsInfo.price_type==3">UFV {{goodsInfo.price}}</span>
+            <span v-else-if="goodsInfo.price_type==1">银鱼 {{goodsInfo.price}}</span>
+            <span v-else>金鱼 {{goodsInfo.price}}</span>
+
+            <span v-if="goodsInfo.price_type==3"> UFV {{goodsInfo.price_origin}}</span>
+            <span v-else-if="goodsInfo.price_type==1"> 银鱼 {{goodsInfo.price_origin}}</span>
+            <span v-else> 金鱼 {{goodsInfo.price_origin}}</span>
+
             </div>
-            <p>{{goodsInfo.price_type}}人已买</p>
+            <p>{{goodsInfo.sold_count}}人已买</p>
         </div>
     </div>
     </div>
@@ -42,13 +49,13 @@
     <div class="tab">
         <div class="tab-item">
           <!-- replace 加上replace: true后，它不会向 history 添加新记录，而是跟它的方法名一样 —— 替换掉当前的 history 记录。 -->
-          <router-link :to="{name:'ShopIntro',params:{goodsInfo:this.goodsInfo}}" replace>商品简介</router-link>
+          <router-link :to="{name:'ShopIntro'}" replace>商品简介</router-link>
         </div>
         <div class="tab-item">
-          <router-link :to="{name:'ShopParame',params:{goodsInfo:this.goodsInfo}}" replace>商品参数</router-link>
+          <router-link :to="{name:'ShopParame'}" replace>商品参数</router-link>
         </div>
         <div class="tab-item">
-          <router-link :to="{name:'ShopNotice',params:{goodsInfo:this.goodsInfo}}" replace>购买须知</router-link>
+          <router-link :to="{name:'ShopNotice'}" replace>购买须知</router-link>
         </div>
       </div>
       <keep-alive>
@@ -96,6 +103,7 @@ export default {
 
   mounted(){
     let id = this.$route.params.id;
+    var goodsId = localStorage.setItem("goods_id",id)
       services.getShopGoodsInfo({
           goods_id:this.id
       })
@@ -111,7 +119,7 @@ export default {
   methods: {
     //   去购物车
         goShopCar(){
-            this.$router.push('ShopCar')
+            this.$router.push('/ShopCar')
         },
     //   返回
       backAction(){
@@ -156,6 +164,12 @@ export default {
                 position: 'middle',
                 duration: 1500
                 });
+            }else{
+                Toast({
+                message: '添加购物车失败',
+                position: 'middle',
+                duration: 1500
+                });     
             }
         })
     }
@@ -182,6 +196,10 @@ export default {
     width: 100%;
     .th-l{
         padding-left: px2rem(25);
+        img{
+            width: px2rem(28);
+            height: px2rem(40);
+        }
     }
     .th-title{
         text-align: center;
@@ -261,10 +279,10 @@ export default {
     background:rgba(224,224,224,1);
     .tab-item{
         float: left;
-        width: 33.33333%;
+        width: 32.999999%;
         text-align:center;
         font-size:px2rem(28);
-        border: 1px solid rgba(187,187,187,1);
+        border: px2rem(1) solid rgba(187,187,187,1);
         a{
             display:block;
             position:relative;
@@ -291,9 +309,20 @@ export default {
           float: left;
           width: px2rem(150);
           margin: 0 auto;
+          line-height: px2rem(120);
           img{
+              width: px2rem(34);
+              height: px2rem(60);
               margin-left: px2rem(25);
           }
+      }
+      .shop_btn{
+        //   width: px2rem(540);
+        //   height: px2rem(100);
+        img{
+            width: px2rem(262);
+            height: px2rem(80);
+        }
       }
   }
 }

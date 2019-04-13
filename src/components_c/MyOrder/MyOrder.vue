@@ -56,7 +56,6 @@ export default {
     height: 100%;
     .tab{
     width: 100%;
-    height:px2rem(203);
     line-height:px2rem(80);
     background:rgba(248,248,248,1);
     padding-top: px2rem(120);
@@ -70,6 +69,7 @@ export default {
             display:block;
             position:relative;
             color: rgba(16,16,16,1);
+            font-family: PingFangSC-regular;
         }
         .router-link-active{
             border-bottom: px2rem(5) solid rgba(229,28,35,1);

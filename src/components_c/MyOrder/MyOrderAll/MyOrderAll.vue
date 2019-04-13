@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div>
-    <MyorderList></MyorderList>
+    <MyorderList :allOrderList=allOrderList></MyorderList>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import MyorderList from '../MyorderList'
 export default {
   data () {
     return {
-
+      allOrderList:[]
     };
   },
 
@@ -22,7 +22,7 @@ export default {
   computed: {},
 
   mounted(){
-    let token= sessionStorage.getItem('LoginToken');
+        let token= sessionStorage.getItem('LoginToken');
         if(token){
         this.token = token;
         // console.log(token+'token_sc')
@@ -33,16 +33,17 @@ export default {
         this.id = id;
         // console.log(id+'tid')
         }
-      services.orderList({
-        token_sc:this.token,
+    services.orderList({
         id:this.id,
-        status:3,
-        page_size:4,
+        token_sc:this.token,
+        status:0,
+        page_size:1,
         page:1
-      })
-      .then(res=>{
-        // console.log(res)
-      })
+    })
+    .then(res=>{
+      this.allOrderList = res.data.data
+      // console.log(this.allOrderList)
+    })
   },
 
   methods: {}
