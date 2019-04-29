@@ -11,8 +11,10 @@
     "test": "node build/test.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "echarts": "^4.2.1",
     "iview": "^3.3.3",
+    "mint-ui": "^2.2.13",
     "v-distpicker": "^1.1.0",
     "vant": "^1.6.13",
     "vee-validate": "^2.2.0",

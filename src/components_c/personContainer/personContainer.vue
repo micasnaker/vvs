@@ -296,7 +296,7 @@ export default {
         font-family: SFUIText-regular;
       }
       .fish {
-        width: px2rem(430);
+        width: px2rem(499);
         height: px2rem(50);
         line-height: px2rem(50);
         span {
